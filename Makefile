@@ -3,12 +3,18 @@ DIR_SRC = ./src
 DIR_OBJ = ./obj
 DIR_BIN = ./bin
 
+#检查文件夹是否存在
+$(shell if [ ! -d $(DIR_OBJ) ]; then mkdir $(DIR_OBJ); fi;)
+$(shell if [ ! -d $(DIR_BIN) ]; then mkdir $(DIR_BIN); fi;)
+
 SRC = $(wildcard ${DIR_SRC}/*.cpp)
 TAR = $(patsubst %.cpp, %.o, $(notdir ${SRC}))
 OBJ = $(patsubst %.cpp, ${DIR_OBJ}/%.o, $(notdir ${SRC}))
 
 COMPILE = g++ -c -I $(DIR_INC) -I $(DIR_SRC)
 MAKEEXE = g++ -g
+
+#可执行文件路径
 SERVER_NAME = $(DIR_BIN)/server
 CLIENT_NAME = $(DIR_BIN)/client
 
