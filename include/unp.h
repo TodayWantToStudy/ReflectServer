@@ -10,6 +10,8 @@
 #include<netinet/in.h>	//定义网际套接字地址结构sockaddr_in，以及htonl、htons等字节序函数
 #include<arpa/inet.h>
 
+const int MAXLINE = 1024;
+const int SERVER_PORT = 8890;
 
 void err_sys(const char *fmt);	//输出当前errno对应的错误信息，未完成。
 

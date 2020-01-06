@@ -9,14 +9,20 @@ OBJ = $(patsubst %.cpp, ${DIR_OBJ}/%.o, $(notdir ${SRC}))
 
 COMPILE = g++ -c -I $(DIR_INC) -I $(DIR_SRC)
 MAKEEXE = g++ -g
-EXE = main
+SERVER_NAME = $(DIR_BIN)/server
+CLIENT_NAME = $(DIR_BIN)/client
 
-ALL: START ${TAR}
-	$(MAKEEXE) ${OBJ} -o $(EXE) 
+ALL: START ${TAR} SERVER CLIENT 
 	@echo "=============编译结束============="
 
 START:
 	@echo "=============编译开始============="
+
+SERVER:
+	$(MAKEEXE) $(filter-out ${DIR_OBJ}/client.o,$(OBJ)) -o $(SERVER_NAME)
+
+CLIENT:
+	$(MAKEEXE) $(filter-out ${DIR_OBJ}/server.o,$(OBJ)) -o $(CLIENT_NAME)
 
 #注意%是在vpath路径下搜索，当然%.o是在变量中搜索
 %.o: $(DIR_SRC)/%.cpp	
@@ -29,4 +35,4 @@ ECHO:
 	
 .PHONY:clean
 clean:
-	rm -rf $(DIR_OBJ)/*.o $(EXE)
+	rm -rf $(DIR_OBJ)/*.o $(SERVER_NAME) $(CLIENT_NAME)

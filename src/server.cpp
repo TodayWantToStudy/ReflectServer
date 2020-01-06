@@ -2,8 +2,6 @@
 
 void str_server(int);
 
-const int MAXLINE = 1024;
-const int SERVER_PORT = 8890;
 int main(int argc, char** argv){
 	int listenfd;
 	struct sockaddr_in server_address;

@@ -21,7 +21,7 @@ ssize_t writen(int fd, const void* vptr, size_t n){
 	size_t nwritten;//这次写入的字节数
 	const char* ptr;//指向当前需要写入的缓冲区
 
-	ptr = vptr;
+	ptr = (const char*)(vptr);
 	nleft = n;
 	while(nleft > 0){
 		//nwritten = 这次调用write函数写入的字节数
