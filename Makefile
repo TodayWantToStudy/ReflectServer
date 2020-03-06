@@ -41,4 +41,5 @@ ECHO:
 	
 .PHONY:clean
 clean:
-	rm -rf $(DIR_OBJ)/*.o $(SERVER_NAME) $(CLIENT_NAME)
+	rm -rf $(DIR_OBJ) $(DIR_BIN)
+#rm -rf $(DIR_OBJ)/*.o $(SERVER_NAME) $(CLIENT_NAME)

@@ -5,7 +5,9 @@
 #include<unistd.h>	//C语言提供 POSIX 操作系统 API 的访问功能的头文件
 #include<errno.h>	//C语言提供的错误码errno相关的宏
 #include<assert.h>	//C语言提供有关防御式编程的库，assert(int exp)本质上是宏定义。
+#include<signal.h>	//有关信号处理的系统调用。
 
+#include<sys/wait.h>	//wait函数 和 waitpid函数
 #include<sys/socket.h>	//定义创建套接字的系列函数
 #include<netinet/in.h>	//定义网际套接字地址结构sockaddr_in，以及htonl、htons等字节序函数
 #include<arpa/inet.h>
@@ -21,3 +23,7 @@ void Writen(int fd, const void *ptr, size_t nbytes);	//writen的包裹函数，�
 
 ssize_t my_read(int fd, char* ptr);						//从描述符中读取数据，存放在缓冲区中，逐个返回
 ssize_t readline(int fd, char* vptr, size_t maxlen);	//通过my_read()逐个读取数据，直到长度超出或者遇到换行
+
+typedef void Sigfunc(int);
+Sigfunc* signal (int signo, Sigfunc* func);
+void Signal(int signo, Sigfunc* func);
