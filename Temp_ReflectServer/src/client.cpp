@@ -1,5 +1,4 @@
 #include"unp.h"
-
 void str_client(FILE*, int);
 
 int main(int argc, char** argv){
@@ -26,17 +25,29 @@ int main(int argc, char** argv){
 }
 
 void str_client(FILE* fp, int sockfd){
-	size_t rc;
+	int maxfdpl;
+	int nready;
+	fd_set rset;
 	char sendline[MAXLINE], recvline[MAXLINE];
-	while(fgets(sendline, MAXLINE, fp) != NULL){
-		//3.write()
-		Writen(sockfd,sendline, 1);
-		sleep(1);
-		Writen(sockfd,sendline+1, strlen(sendline)-1);
-		//4.read()
-		if(readline(sockfd, recvline, MAXLINE) <= 0){
-			err_sys("readline error");
+	
+	FD_ZERO(&rset);
+	for( ; ; ){
+		FD_SET(sockfd, &rset);
+		FD_SET(fileno(fp), &rset);
+		maxfdpl = max(fileno(fp), sockfd) + 1;
+		nready = select(maxfdpl, &rset, NULL, NULL, NULL);
+		if(nready < 0)
+			err_sys("select error");
+
+		if(FD_ISSET(sockfd, &rset)){
+			if(Readline(sockfd, recvline, MAXLINE) == 0)
+				err_sys("str_client: server terminated prematurely");
+			fputs(recvline, stdout);
 		}
-		fputs(recvline, stdout);
+		if(FD_ISSET(fileno(fp), &rset)){
+			if(fgets(sendline, MAXLINE, fp) == NULL)
+				return;
+			Writen(sockfd, sendline, strlen(sendline));
+		}
 	}
 }
